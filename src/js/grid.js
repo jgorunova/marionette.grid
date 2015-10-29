@@ -16,6 +16,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     columns: null,
     options: {
         showLoader: true,
+        paginatorWindowSize: 4,
         className: 'magrid-container',
         tableContainerClassName: 'magrid-table-container',
         paginatorContainerClassName: 'magrid-paginator-container',
@@ -154,7 +155,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                     bindedCollection: this.collection,
                     paginatorClassName: this.getOption('paginatorClassName'),
                     currentPageClass: this.getOption('currentPageClass'),
-                    disabledPageClass: this.getOption('disabledPageClass')
+                    disabledPageClass: this.getOption('disabledPageClass'),
+                    paginatorWindowSize: this.getOption('paginatorWindowSize')
                 });
             }
         }

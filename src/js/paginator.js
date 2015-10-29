@@ -58,50 +58,87 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
     },
     recalculatePages: function() {
         var collection = this.bindedCollection;
+        var window_size = this.getOption('paginatorWindowSize');
         var state = collection.state;
 
-        var firstPage = state.firstPage;
-        var lastPage = state.lastPage;
-        lastPage = Math.max(1, firstPage ? lastPage : lastPage);
-        var currentPage = Math.max(state.currentPage, state.firstPage);
-        currentPage = firstPage ? currentPage : currentPage;
+        var first_page = Math.max(1, state.firstPage);
+        var last_page = Math.max(1, state.firstPage, state.lastPage);
+        var curren_page = Math.max(state.currentPage, state.firstPage);
+        var prev_page = Math.max(1, curren_page -1);
+        var next_page = Math.min(last_page, curren_page+1);
 
-        var prevPage = Math.max(1, currentPage -1);
-        var nextPage = Math.min(lastPage, currentPage+1);
-
-        var pages = [{
-            id: 1,
+        var prefix_window = [{
             is_current: false,
             label: '<<',
-            is_disabled: (currentPage == 1),
+            is_disabled: (curren_page == 1),
             page_num: 1
         }, {
-            id: 2,
             is_current: false,
             label: '<',
-            is_disabled: (currentPage == 1),
-            page_num: prevPage
-        }, {
-            id: 3,
-            is_current: true,
-            label: '' + currentPage,
-            is_disabled: false,
-            page_num: currentPage
-        }, {
-            id: 4,
-            is_current: false,
-            label: '>',
-            is_disabled: (currentPage == lastPage),
-            page_num: nextPage
-        }, {
-            id: 5,
-            is_current: false,
-            label: '>>',
-            is_disabled: (currentPage == lastPage),
-            page_num: lastPage
+            is_disabled: (curren_page == 1),
+            page_num: prev_page
         }];
 
-        this.collection.reset(pages);
+        var pages_window = this.calculateWindow(first_page, curren_page, last_page, window_size);
 
+        var suffix_window = [{
+            is_current: false,
+            label: '>',
+            is_disabled: (curren_page == last_page),
+            page_num: next_page
+        }, {
+            is_current: false,
+            label: '>>',
+            is_disabled: (curren_page == last_page),
+            page_num: last_page
+        }];
+
+        var full_window = prefix_window.concat(pages_window).concat(suffix_window);
+
+        this.collection.reset(full_window);
+
+    },
+
+    calculateWindow: function(first_page, curren_page, last_page, window_size) {
+        var i, page_num;
+        var pages_window=[{
+            is_current: true,
+            label: curren_page + '',
+            is_disabled: false,
+            page_num: curren_page
+        }];
+
+        for(var i=1; i<=window_size; i++) {
+            if(pages_window.length >= window_size) {
+                break;
+            }
+            // try to add  page after current
+            page_num =  curren_page +  i;
+            if(page_num <= last_page) {
+                pages_window.push({
+                    is_current: false,
+                    label: page_num + '',
+                    is_disabled: (curren_page == last_page),
+                    page_num: page_num
+                });
+                if(pages_window.length >= window_size) {
+                    break;
+                }
+            }
+            // try to add page before current
+            page_num =  curren_page -  i;
+            if(page_num >= first_page) {
+                pages_window.splice(0,0, {
+                    is_current: false,
+                    label: page_num + '',
+                    is_disabled: (curren_page == first_page),
+                    page_num: page_num
+                });
+                if(pages_window.length >= window_size) {
+                    break;
+                }
+            }
+        }
+        return pages_window;
     }
 });
