@@ -23,8 +23,11 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         tableClassName: 'magrid-table',
         paginatorClassName: 'magrid-paginator',
         sortingAscClassName: 'magrid-asc',
-        sortingsDescClassName: 'magrid-desc',
-        overlayText: 'wait...',
+        sortingDescClassName: 'magrid-desc',
+        overlayBoxClassName: 'magrid-overlay',
+        currentPageClass: 'magrid-active-page',
+        disabledPageClass: 'magrid-disabled-page',
+        overlayText: '',
         cellEvents: {
             //'cell:click': 'on_cell_click',  //place to listen any Cell event
         },
@@ -53,7 +56,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         '</div>',
         '<div class="<%= paginatorContainerClassName %>"></div>',
         '<div class="<%= overlayContainerClassName %>" style="display: none;">',
-        '  <%= overlayText %>',
+        '  <div class="<%= overlayBoxClassName %>"><%= overlayText %></div>',
         '</div>'
     ].join('')),
     templateHelpers: function() {
@@ -62,6 +65,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             tableClassName: this.getOption('tableClassName'),
             paginatorContainerClassName: this.getOption('paginatorContainerClassName'),
             overlayContainerClassName: this.getOption('overlayContainerClassName'),
+            overlayBoxClassName: this.getOption('overlayBoxClassName'),
             overlayText: this.getOption('overlayText')
         }
     },
@@ -82,7 +86,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         all: 'on_collection_event'
     },
     childEvents: {
-        'header:cell:click': 'on_header_cell_clicked'
+        'header:cell:click': 'on_header_cell_clicked',
+        'paginator:page:click': 'on_page_clicked'
     },
 
     initialize: function() {
@@ -123,7 +128,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this._headerView = new HeaderView({
                 collection: this.columnsCollection,
                 sortingAscClassName: this.getOption('sortingAscClassName'),
-                sortingsDescClassName: this.getOption('sortingsDescClassName')
+                sortingDescClassName: this.getOption('sortingDescClassName')
             });
         }
         return this._headerView ;
@@ -147,7 +152,9 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             if (Backbone.PageableCollection && this.collection instanceof Backbone.PageableCollection) {
                 this._paginatorView = new PaginatorView({
                     bindedCollection: this.collection,
-                    paginatorClassName: this.getOption('paginatorClassName')
+                    paginatorClassName: this.getOption('paginatorClassName'),
+                    currentPageClass: this.getOption('currentPageClass'),
+                    disabledPageClass: this.getOption('disabledPageClass')
                 });
             }
         }
@@ -192,6 +199,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 this.collection.fullCollection.comparator = comparator;
                 this.collection.fullCollection.sort();
             } else {
+                this.collection.state.currentPage = 1;
                 this.collection.fetch({
                     reset: true,
                     success: function() {}
@@ -201,6 +209,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this.collection.comparator = comparator;
             this.collection.sort();
         }
+    },
+    on_page_clicked: function(paginator_view, page_view) {
+        var page = page_view.model.get('page_num');
+        this.collection.getPage(page);
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
         var clean_event_name = event_name.replace('body:row:', '');

@@ -5,7 +5,7 @@ var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
     childViewOptions: function() {
         return {
             sortingAscClassName: this.getOption('sortingAscClassName'),
-            sortingDescClassName: this.getOption('sortingsDescClassName')
+            sortingDescClassName: this.getOption('sortingDescClassName')
         };
     },
     childView: Backbone.Marionette.ItemView.extend({
@@ -19,7 +19,7 @@ var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
         },
         initialize: function() {
             this.sortingAscClassName = this.getOption('sortingAscClassName');
-            this.sortingDescClassName = this.getOption('sortingsDescClassName');
+            this.sortingDescClassName = this.getOption('sortingDescClassName');
         },
         on_direction_changed: function(model, new_direction) {
             if(new_direction == 'asc') {

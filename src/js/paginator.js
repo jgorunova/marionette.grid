@@ -1,13 +1,41 @@
 
 var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.extend({
     tagName: 'ul',
+    childViewEventPrefix:'paginator',
     childView: Backbone.Marionette.ItemView.extend({
         tagName: 'li',
-        template: _.template('<a class="<%= is_current %> <%= is_disabled %>"><%= label %></a>'),
+        template: _.template([
+            '<% if (is_current){ %>',
+            '    <span class="<%= currentPageClass %>"><%= label %></span>',
+            '<% } else if(is_disabled) { %>',
+            '    <span class="<%= disabledPageClass %>"><%= label %></span>',
+            '<% } else { %>',
+            '    <a href="#"><%= label %></a>',
+            '<% } %>'
+        ].join('')),
+        templateHelpers: function() {
+            return {
+                currentPageClass: this.getOption('currentPageClass'),
+                disabledPageClass: this.getOption('disabledPageClass')
+            }
+        },
         modelEvents: {
             'change': 'render'
+        },
+        events: {
+            'click a': 'on_click'
+        },
+        on_click: function(e) {
+            e.preventDefault();
+            this.trigger('page:click');
         }
     }),
+    childViewOptions: function() {
+        return {
+            currentPageClass: this.getOption('currentPageClass'),
+            disabledPageClass: this.getOption('disabledPageClass')
+        }
+    },
     initialize: function() {
         this.collection = new Backbone.Collection([], {
             model: Backbone.Model.extend({
@@ -45,16 +73,39 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
 
         var prevPage = Math.max(1, currentPage -1);
         var nextPage = Math.min(lastPage, currentPage+1);
-        var page_indexes = _.uniq([firstPage, lastPage, currentPage, prevPage, nextPage]);
 
-        var pages = [];
-        for(var i  in page_indexes) {
-            pages.push({
-                id: i + 1,
-                is_current: (page_indexes[i] == currentPage),
-                label: page_indexes[i]
-            })
-        }
+        var pages = [{
+            id: 1,
+            is_current: false,
+            label: '<<',
+            is_disabled: (currentPage == 1),
+            page_num: 1
+        }, {
+            id: 2,
+            is_current: false,
+            label: '<',
+            is_disabled: (currentPage == 1),
+            page_num: prevPage
+        }, {
+            id: 3,
+            is_current: true,
+            label: '' + currentPage,
+            is_disabled: false,
+            page_num: currentPage
+        }, {
+            id: 4,
+            is_current: false,
+            label: '>',
+            is_disabled: (currentPage == lastPage),
+            page_num: nextPage
+        }, {
+            id: 5,
+            is_current: false,
+            label: '>>',
+            is_disabled: (currentPage == lastPage),
+            page_num: lastPage            
+        }];
+
         this.collection.reset(pages);
 
     }
