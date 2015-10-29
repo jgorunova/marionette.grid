@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">9.6% </span>
+        <span class="strong">9.16% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/125</span>
+        <span class='fraction'>12/131</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.41% </span>
+        <span class="strong">3.95% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/68</span>
+        <span class='fraction'>3/76</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">5.56% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/36</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">9.76% </span>
+        <span class="strong">9.3% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>12/123</span>
+        <span class='fraction'>12/129</span>
       </div>
     </div>
   </div>
@@ -489,10 +489,7 @@
 444
 445
 446
-447
-448
-449
-450</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+447</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -530,17 +527,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -929,6 +921,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -977,19 +971,14 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
     childViewEventPrefix:'paginator',
     childView: Backbone.Marionette.ItemView.extend({
         tagName: 'li',
-        template: _.template([
-            '&lt;% if (is_current){ %&gt;',
-            '    &lt;span class="&lt;%= currentPageClass %&gt;"&gt;&lt;%= label %&gt;&lt;/span&gt;',
-            '&lt;% } else if(is_disabled) { %&gt;',
-            '    &lt;span class="&lt;%= disabledPageClass %&gt;"&gt;&lt;%= label %&gt;&lt;/span&gt;',
-            '&lt;% } else { %&gt;',
-            '    &lt;a href="#"&gt;&lt;%= label %&gt;&lt;/a&gt;',
-            '&lt;% } %&gt;'
-        ].join('')),
-        templateHelpers: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >            return {</span>
-                currentPageClass: this.getOption('currentPageClass'),
-                disabledPageClass: this.getOption('disabledPageClass')
+        template: _.template('&lt;a href="#" title="Page &lt;%= page_num %&gt;"&gt;&lt;%= label %&gt;&lt;/a&gt;'),
+        onRender: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            this.$el.removeClass(this.getOption('currentPageClass'));</span>
+<span class="cstat-no" title="statement not covered" >            this.$el.removeClass(this.getOption('disabledPageClass'));</span>
+<span class="cstat-no" title="statement not covered" >            if(this.model.get('is_current')) {</span>
+<span class="cstat-no" title="statement not covered" >                this.$el.addClass(this.getOption('currentPageClass'));</span>
+            } else <span class="cstat-no" title="statement not covered" >if(this.model.get('is_disabled')) {</span>
+<span class="cstat-no" title="statement not covered" >                this.$el.addClass(this.getOption('disabledPageClass'));</span>
             }
         },
         modelEvents: {
@@ -1076,7 +1065,7 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
             is_current: false,
             label: '&gt;&gt;',
             is_disabled: (currentPage == lastPage),
-            page_num: lastPage            
+            page_num: lastPage
         }];
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        this.collection.reset(pages);</span>
@@ -1376,8 +1365,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         }
     },
     on_page_clicked: <span class="fstat-no" title="function not covered" >function(paginator_view, page_view) {</span>
-<span class="cstat-no" title="statement not covered" >        var page = page_view.model.get('page_num');</span>
-<span class="cstat-no" title="statement not covered" >        this.collection.getPage(page);</span>
+<span class="cstat-no" title="statement not covered" >        if(!page_view.model.get('is_active') &amp;&amp; !page_view.model.get('is_disabled')) {</span>
+<span class="cstat-no" title="statement not covered" >            var page = page_view.model.get('page_num');</span>
+<span class="cstat-no" title="statement not covered" >            this.collection.getPage(page);</span>
+        }
     },
     on_cell_event: <span class="fstat-no" title="function not covered" >function(event_name, body_view, row_view, cell_view) {</span>
 <span class="cstat-no" title="statement not covered" >        var clean_event_name = event_name.replace('body:row:', '');</span>
@@ -1396,7 +1387,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 29 2015 14:35:38 GMT+0200 (EET)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 29 2015 15:10:39 GMT+0200 (EET)
 </div>
 </div>
 <script src="../prettify.js"></script>

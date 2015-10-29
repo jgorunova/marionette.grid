@@ -211,8 +211,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         }
     },
     on_page_clicked: function(paginator_view, page_view) {
-        var page = page_view.model.get('page_num');
-        this.collection.getPage(page);
+        if(!page_view.model.get('is_active') && !page_view.model.get('is_disabled')) {
+            var page = page_view.model.get('page_num');
+            this.collection.getPage(page);
+        }
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
         var clean_event_name = event_name.replace('body:row:', '');

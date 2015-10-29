@@ -4,19 +4,14 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
     childViewEventPrefix:'paginator',
     childView: Backbone.Marionette.ItemView.extend({
         tagName: 'li',
-        template: _.template([
-            '<% if (is_current){ %>',
-            '    <span class="<%= currentPageClass %>"><%= label %></span>',
-            '<% } else if(is_disabled) { %>',
-            '    <span class="<%= disabledPageClass %>"><%= label %></span>',
-            '<% } else { %>',
-            '    <a href="#"><%= label %></a>',
-            '<% } %>'
-        ].join('')),
-        templateHelpers: function() {
-            return {
-                currentPageClass: this.getOption('currentPageClass'),
-                disabledPageClass: this.getOption('disabledPageClass')
+        template: _.template('<a href="#" title="Page <%= page_num %>"><%= label %></a>'),
+        onRender: function() {
+            this.$el.removeClass(this.getOption('currentPageClass'));
+            this.$el.removeClass(this.getOption('disabledPageClass'));
+            if(this.model.get('is_current')) {
+                this.$el.addClass(this.getOption('currentPageClass'));
+            } else if(this.model.get('is_disabled')) {
+                this.$el.addClass(this.getOption('disabledPageClass'));
             }
         },
         modelEvents: {
@@ -103,7 +98,7 @@ var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.ex
             is_current: false,
             label: '>>',
             is_disabled: (currentPage == lastPage),
-            page_num: lastPage            
+            page_num: lastPage
         }];
 
         this.collection.reset(pages);
