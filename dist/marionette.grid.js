@@ -228,8 +228,8 @@ var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
     childView: Backbone.Marionette.ItemView.extend({
         tagName: 'th',
         template: _.template('<a><%= header %></a>'),
-        triggers: {
-            'click a': 'cell:click'
+        events: {
+            'click a': 'on_click'
         },
         modelEvents: {
             'change:direction': 'on_direction_changed'
@@ -237,6 +237,11 @@ var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
         initialize: function() {
             this.sortingAscClassName = this.getOption('sortingAscClassName');
             this.sortingDescClassName = this.getOption('sortingDescClassName');
+        },
+        on_click: function() {
+            if(this.model.get('sortable')) {
+                this.trigger('cell:click');
+            }
         },
         on_direction_changed: function(model, new_direction) {
             if(new_direction == 'asc') {
