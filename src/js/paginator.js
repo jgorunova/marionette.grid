@@ -1,8 +1,8 @@
 
-var PaginatorView = MaGrid.PaginatorView = Backbone.Marionette.CollectionView.extend({
+var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
     tagName: 'ul',
     childViewEventPrefix:'paginator',
-    childView: Backbone.Marionette.ItemView.extend({
+    childView: Marionette.ItemView.extend({
         tagName: 'li',
         template: _.template('<a href="#" title="Page <%= page_num %>"><%= label %></a>'),
         onRender: function() {

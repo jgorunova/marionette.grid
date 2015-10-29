@@ -1,29 +1,4 @@
-var CellView = MaGrid.CellView = Backbone.Marionette.ItemView.extend({
-    tagName: 'td',
-    template: _.template('<div><%= display_value  %></div>'),
-    templateHelpers: function() {
-        var display_value;
-        if(this.column.get('display_value')) {
-            display_value = this.column.get('display_value');
-            if(_.isFunction(display_value)) {
-                display_value = display_value(this.model);
-            }
-        } else {
-            display_value = this.model.get(this.column.get('attr'));
-        }
-        return {
-            display_value: display_value
-        }
-    },
-    initialize: function() {
-        this.column = this.model;
-        this.model = this.getOption('bindedModel');
-        this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.column, 'destroy', this.destroy);
-    }
-});
-
-var RowView = MaGrid.RowView = Backbone.Marionette.CollectionView.extend({
+var RowView = MaGrid.RowView = Marionette.CollectionView.extend({
     reorderOnSort: true,
     tagName: 'tr',
     childViewEventPrefix: 'row',
@@ -37,7 +12,7 @@ var RowView = MaGrid.RowView = Backbone.Marionette.CollectionView.extend({
     }
 });
 
-var BodyView = MaGrid.BodyView = Backbone.Marionette.CollectionView.extend({
+var BodyView = MaGrid.BodyView = Marionette.CollectionView.extend({
     reorderOnSort: true,
     template: false,
     childView: RowView,
@@ -45,6 +20,29 @@ var BodyView = MaGrid.BodyView = Backbone.Marionette.CollectionView.extend({
     childViewOptions: function(model, index) {
         return {
             collection: this.getOption('columns')
+        }
+    },
+    emptyView: Marionette.ItemView.extend({
+        tagName: 'tr',
+        template: _.template('<td class="<%= emptyTextClassName %>" colspan="<%= colspan %>"><%= emptyText %></td>'),
+        templateHelpers: function() {
+            return {
+                emptyText: this.getOption('emptyText'),
+                emptyTextClassName: this.getOption('emptyTextClassName'),
+                colspan: this.getOption('columns').length
+            };
+        },
+        initialize: function() {
+            this.listenTo(this.getOption('columns'), 'add', this.render);
+            this.listenTo(this.getOption('columns'), 'remove', this.render);
+            this.listenTo(this.getOption('columns'), 'reset', this.render);
+        }
+    }),
+    emptyViewOptions: function() {
+        return {
+            columns: this.getOption('columns'),
+            emptyText: this.getOption('emptyText'),
+            emptyTextClassName: this.getOption('emptyTextClassName')
         }
     }
 });

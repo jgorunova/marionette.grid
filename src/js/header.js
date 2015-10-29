@@ -1,4 +1,4 @@
-var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
+var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
     tagName: 'tr',
     reorderOnSort: true,
     childViewEventPrefix: 'header',
@@ -8,7 +8,7 @@ var HeaderView = MaGrid.HeaderView = Backbone.Marionette.CollectionView.extend({
             sortingDescClassName: this.getOption('sortingDescClassName')
         };
     },
-    childView: Backbone.Marionette.ItemView.extend({
+    childView: Marionette.ItemView.extend({
         tagName: 'th',
         template: _.template('<a><%= header %></a>'),
         events: {

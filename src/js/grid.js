@@ -28,7 +28,9 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         overlayBoxClassName: 'magrid-overlay',
         currentPageClass: 'magrid-active-page',
         disabledPageClass: 'magrid-disabled-page',
+        emptyTextClassName: 'magrid-empty-text',
         overlayText: '',
+        emptyText: 'No data to display',
         cellEvents: [
             //'custom_event' //place to listen any Cell event
         ],
@@ -138,6 +140,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 el: this.ui.body,
                 collection: this.collection,
                 columns: this.columnsCollection,
+                emptyText: this.getOption('emptyText'),
+                emptyTextClassName: this.getOption('emptyTextClassName')
             });
             this.listenTo(this._bodyView, 'all', this.on_cell_event);
         }
