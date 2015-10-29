@@ -1,16 +1,25 @@
 var CellView = MaGrid.CellView = Backbone.Marionette.ItemView.extend({
     tagName: 'td',
-    template: _.template('<div><%= model[attr] %></div>'),
+    template: _.template('<div><%= display_value  %></div>'),
     templateHelpers: function() {
+        var display_value;
+        if(this.column.get('display_value')) {
+            display_value = this.column.get('display_value');
+            if(_.isFunction(display_value)) {
+                display_value = display_value(this.model);
+            }
+        } else {
+            display_value = this.model.get(this.column.get('attr'));
+        }
         return {
-            model: this.getOption('bindedModel').toJSON()
+            display_value: display_value
         }
     },
-    modelEvents: {
-        'change': 'render'
-    },
-    triggers: {
-        'click div': 'cell:click',
+    initialize: function() {
+        this.column = this.model;
+        this.model = this.getOption('bindedModel');
+        this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.column, 'destroy', this.destroy);
     }
 });
 

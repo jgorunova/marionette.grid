@@ -29,9 +29,9 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         currentPageClass: 'magrid-active-page',
         disabledPageClass: 'magrid-disabled-page',
         overlayText: '',
-        cellEvents: {
-            //'cell:click': 'on_cell_click',  //place to listen any Cell event
-        },
+        cellEvents: [
+            //'custom_event' //place to listen any Cell event
+        ],
         defaultComparator: function(column, direction, model1, model2) {
             var a, b;
             if (direction == 'desc') {
@@ -50,13 +50,13 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     template: _.template([
         '<div class="<%= tableContainerClassName %>">',
         '  <table class="<%= tableClassName %>">',
-        '    <thead></thead>',
-        '    <tbody></tbody>',
-        '    <tfoot></tfoot>',
+        '    <thead data-magrid_region="header"></thead>',
+        '    <tbody data-magrid_region="body"></tbody>',
+        '    <tfoot data-magrid_region="footer"></tfoot>',
         '  </table>',
         '</div>',
-        '<div class="<%= paginatorContainerClassName %>"></div>',
-        '<div class="<%= overlayContainerClassName %>" style="display: none;">',
+        '<div class="<%= paginatorContainerClassName %>" data-magrid_region="paginator"></div>',
+        '<div class="<%= overlayContainerClassName %>" style="display: none;" data-magrid_region="overlay">',
         '  <div class="<%= overlayBoxClassName %>"><%= overlayText %></div>',
         '</div>'
     ].join('')),
@@ -70,18 +70,14 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             overlayText: this.getOption('overlayText')
         }
     },
-    regions: function() {
-        return {
-            headerRegion: 'thead',
-            footerRegion: 'tfoot',
-            paginatorRegion: '.' + this.getOption('paginatorContainerClassName')
-        };
+    regions: {
+        headerRegion: '[data-magrid_region="header"]',
+        footerRegion: '[data-magrid_region="footer"]',
+        paginatorRegion: '[data-magrid_region="paginator"]'
     },
-    ui: function() {
-        return {
-            body: 'tbody',
-            overlay: '.' + this.getOption('overlayContainerClassName')
-        };
+    ui: {
+        body: '[data-magrid_region="body"]',
+        overlay: '[data-magrid_region="overlay"]'
     },
     collectionEvents: {
         all: 'on_collection_event'
@@ -91,7 +87,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         'paginator:page:click': 'on_page_clicked'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+        this.options = _.extend({}, GridView.prototype.options, options);
         // TODO: check options
         this.columnsCollection = new Backbone.Collection(this.getOption('columns'), {
             model: Backbone.Model.extend({
@@ -123,6 +120,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 
         var paginatorView = this.getPaginatorView();
         paginatorView && this.paginatorRegion.show(paginatorView);
+        this.$el.addClass(this.getOption('className'));
     },
     getHeaderView: function() {
         if(!this._headerView) {
@@ -169,7 +167,11 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this._bodyView.destroy();
         }
     },
-    on_collection_event: function(event_name) {
+    on_collection_event: function(event_name, target) {
+        if(target  instanceof Backbone.Model) {
+            // do not trigger on bubbled model event
+            return;
+        }
         if (event_name == 'request' && this.getOption('showLoader')) {
             this.showLoader();
         } else if (event_name == 'sync' || event_name == 'error') {
@@ -220,11 +222,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
         var clean_event_name = event_name.replace('body:row:', '');
-        var method_name = (this.getOption('cellEvents') || {})[clean_event_name];
-        if (_.isFunction(method_name)) {
-            method_name(row_view, cell_view);
-        } else if (_.isFunction(this[method_name])) {
-            this[method_name](row_view, cell_view);
+
+        var need_trigger = (this.getOption('cellEvents') || []).indexOf(clean_event_name) > -1;
+        if (need_trigger) {
+            this.triggerMethod(clean_event_name, row_view, cell_view);
         }
     },
 });
