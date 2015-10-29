@@ -19,12 +19,12 @@ describe("A Grid", function () {
       title: "The Catcher in the Rye"
     }]);
 
-    grid = new MaGrid.Grid({
-    });
+    //grid = new MaGrid.Grid({
+    //});
   });
 
   it("my first test", function () {
-    expect(grid.test).toBe(true);
+    expect(_.isUndefined(MaGrid) ).toBe(false);
   });
 
 });

@@ -61,7 +61,11 @@ module.exports = function(grunt) {
                         '}));'
                 },
                 src: [
-                    "src/grid.js"
+                    "src/js/init.js",
+                    "src/js/paginator.js",
+                    "src/js/body.js",
+                    "src/js/header.js",
+                    "src/js/grid.js"
                 ],
                 dest: "dist/marionette.grid.js"
             }
@@ -113,7 +117,7 @@ module.exports = function(grunt) {
                     compile: true
                 },
                 files: {
-                    "dist/marionette.grid.css": ["src/marionette.grid.css"]
+                    "dist/marionette.grid.css": ["src/css/marionette.grid.css"]
                 }
             },
             default: {
@@ -121,7 +125,7 @@ module.exports = function(grunt) {
                     compress: true
                 },
                 files: {
-                    "dist/marionette.grid.min.css": ["src/marionette.grid.css"]
+                    "dist/marionette.grid.min.css": ["src/css/marionette.grid.css"]
                 }
             }
         },
@@ -147,7 +151,7 @@ module.exports = function(grunt) {
         },
         jsdoc: {
             dist: {
-                src: ['src/*.js', 'README.md'],
+                src: ['src/js/*.js', 'README.md'],
                 options: {
                     "destination": "docs/",
                     "encoding": "utf8",
