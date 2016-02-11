@@ -294,9 +294,11 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
         },
         on_direction_changed: function(model, new_direction) {
             if(new_direction == 'asc') {
-                this.$el.addClass(this.sortingAscClassName);
+                this.$el.addClass(this.sortingAscClassName)
+                        .removeClass(this.sortableColumnClassName);
             } else if(new_direction == 'desc') {
-                this.$el.addClass(this.sortingDescClassName);
+                this.$el.addClass(this.sortingDescClassName)
+                        .removeClass(this.sortableColumnClassName);
             } else {
                 this.$el
                     .removeClass(this.sortingDescClassName)
