@@ -40,7 +40,7 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
             } else if(new_direction == 'desc') {
                 this.$el.addClass(this.sortingDescClassName)
                         .removeClass(this.sortableColumnClassName);
-            } elif(this.model.get('sortable')) {
+            } else if(this.model.get('sortable')) {
                 this.$el
                     .removeClass(this.sortingDescClassName)
                     .removeClass(this.sortingAscClassName)
