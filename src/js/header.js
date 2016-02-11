@@ -5,14 +5,15 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
     childViewOptions: function() {
         return {
             sortingAscClassName: this.getOption('sortingAscClassName'),
-            sortingDescClassName: this.getOption('sortingDescClassName')
+            sortingDescClassName: this.getOption('sortingDescClassName'),
+            sortableColumnClassName: this.getOption('sortableColumnClassName'),
         };
     },
     childView: Marionette.ItemView.extend({
         tagName: 'th',
-        template: _.template('<a><%= header %></a>'),
+        template: _.template('<div><%= header %></div>'),
         events: {
-            'click a': 'on_click'
+            'click div': 'on_click'
         },
         modelEvents: {
             'change:direction': 'on_direction_changed'
@@ -20,10 +21,16 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
         initialize: function() {
             this.sortingAscClassName = this.getOption('sortingAscClassName');
             this.sortingDescClassName = this.getOption('sortingDescClassName');
+            this.sortableColumnClassName = this.getOption('sortableColumnClassName');
         },
         on_click: function() {
             if(this.model.get('sortable')) {
                 this.trigger('cell:click');
+            }
+        },
+        onRender: function() {
+            if(this.model.get('sortable')) {
+                this.$el.addClass(this.sortableColumnClassName);
             }
         },
         on_direction_changed: function(model, new_direction) {
@@ -34,7 +41,8 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
             } else {
                 this.$el
                     .removeClass(this.sortingDescClassName)
-                    .removeClass(this.sortingAscClassName);
+                    .removeClass(this.sortingAscClassName)
+                    .addClass(this.sortableColumnClassName);
             }
         }
     })

@@ -25,6 +25,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         paginatorClassName: 'magrid-paginator',
         sortingAscClassName: 'magrid-asc',
         sortingDescClassName: 'magrid-desc',
+        sortableColumnClassName: 'magrid-sortable',
         overlayBoxClassName: 'magrid-overlay',
         currentPageClass: 'magrid-active-page',
         disabledPageClass: 'magrid-disabled-page',
@@ -129,7 +130,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this._headerView = new HeaderView({
                 collection: this.columnsCollection,
                 sortingAscClassName: this.getOption('sortingAscClassName'),
-                sortingDescClassName: this.getOption('sortingDescClassName')
+                sortingDescClassName: this.getOption('sortingDescClassName'),
+                sortableColumnClassName: this.getOption('sortableColumnClassName'),
             });
         }
         return this._headerView ;

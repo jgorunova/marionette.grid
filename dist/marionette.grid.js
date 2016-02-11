@@ -2,7 +2,7 @@
   marionette.grid 0.0.1
   git+https://github.com/jgorunova/marionette.grid.git
 
-  Copyright (c) 2015 Julia Gorunova
+  Copyright (c) 2016 Julia Gorunova
   Licensed under the MIT license.
 */
 
@@ -264,14 +264,15 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
     childViewOptions: function() {
         return {
             sortingAscClassName: this.getOption('sortingAscClassName'),
-            sortingDescClassName: this.getOption('sortingDescClassName')
+            sortingDescClassName: this.getOption('sortingDescClassName'),
+            sortableColumnClassName: this.getOption('sortableColumnClassName'),
         };
     },
     childView: Marionette.ItemView.extend({
         tagName: 'th',
-        template: _.template('<a><%= header %></a>'),
+        template: _.template('<div><%= header %></div>'),
         events: {
-            'click a': 'on_click'
+            'click div': 'on_click'
         },
         modelEvents: {
             'change:direction': 'on_direction_changed'
@@ -279,10 +280,16 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
         initialize: function() {
             this.sortingAscClassName = this.getOption('sortingAscClassName');
             this.sortingDescClassName = this.getOption('sortingDescClassName');
+            this.sortableColumnClassName = this.getOption('sortableColumnClassName');
         },
         on_click: function() {
             if(this.model.get('sortable')) {
                 this.trigger('cell:click');
+            }
+        },
+        onRender: function() {
+            if(this.model.get('sortable')) {
+                this.$el.addClass(this.sortableColumnClassName);
             }
         },
         on_direction_changed: function(model, new_direction) {
@@ -293,7 +300,8 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
             } else {
                 this.$el
                     .removeClass(this.sortingDescClassName)
-                    .removeClass(this.sortingAscClassName);
+                    .removeClass(this.sortingAscClassName)
+                    .addClass(this.sortableColumnClassName);
             }
         }
     })
@@ -326,6 +334,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         paginatorClassName: 'magrid-paginator',
         sortingAscClassName: 'magrid-asc',
         sortingDescClassName: 'magrid-desc',
+        sortableColumnClassName: 'magrid-sortable',
         overlayBoxClassName: 'magrid-overlay',
         currentPageClass: 'magrid-active-page',
         disabledPageClass: 'magrid-disabled-page',
@@ -430,7 +439,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this._headerView = new HeaderView({
                 collection: this.columnsCollection,
                 sortingAscClassName: this.getOption('sortingAscClassName'),
-                sortingDescClassName: this.getOption('sortingDescClassName')
+                sortingDescClassName: this.getOption('sortingDescClassName'),
+                sortableColumnClassName: this.getOption('sortableColumnClassName'),
             });
         }
         return this._headerView ;
