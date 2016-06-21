@@ -63,6 +63,7 @@ module.exports = function(grunt) {
                 src: [
                     "src/js/init.js",
                     "src/js/paginator.js",
+                    "src/js/sizer.js",
                     "src/js/cells.js",
                     "src/js/body.js",
                     "src/js/header.js",

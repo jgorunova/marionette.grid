@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">7.73% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>14/181</span>
+        <span class='fraction'>15/194</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">2.94% </span>
+        <span class="strong">2.88% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/102</span>
+        <span class='fraction'>3/104</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.65% </span>
+        <span class="strong">4.17% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/43</span>
+        <span class='fraction'>2/48</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.82% </span>
+        <span class="strong">7.81% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>14/179</span>
+        <span class='fraction'>15/192</span>
       </div>
     </div>
   </div>
@@ -621,7 +621,60 @@
 576
 577
 578
-579</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -793,6 +846,59 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1374,6 +1480,59 @@ var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
     }
 });
 &nbsp;
+&nbsp;
+var SizerView = MaGrid.SizerView = Marionette.CollectionView.extend({
+    tagName: 'ul',
+    childViewEventPrefix:'sizer',
+    childView: Marionette.ItemView.extend({
+        tagName: 'li',
+        template: _.template('&lt;a href="#" title="&lt;%= page_size %&gt; items per page"&gt;&lt;%= page_size %&gt;&lt;/a&gt;'),
+        onRender: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            this.$el.removeClass(this.getOption('currentPageClass'));</span>
+<span class="cstat-no" title="statement not covered" >            if(this.model.get('is_current')) {</span>
+<span class="cstat-no" title="statement not covered" >                this.$el.addClass(this.getOption('currentPageClass'));</span>
+            }
+        },
+        modelEvents: {
+            'change': 'render'
+        },
+        events: {
+            'click a': 'on_click'
+        },
+        on_click: <span class="fstat-no" title="function not covered" >function(e) {</span>
+<span class="cstat-no" title="statement not covered" >            e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >            this.trigger('size:click');</span>
+        }
+    }),
+    childViewOptions: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            currentPageClass: this.getOption('currentPageClass')
+        }
+    },
+    initialize: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >        this.collection = new Backbone.Collection([], {</span>
+            model: Backbone.Model.extend({
+                defaults: {
+                    page_size: null,
+                    is_current: false
+                }
+            })
+        });
+<span class="cstat-no" title="statement not covered" >        var page_sizes = this.getOption('pageSizes');</span>
+<span class="cstat-no" title="statement not covered" >        var current_page_size = this.getOption('bindedCollection').state.pageSize;</span>
+<span class="cstat-no" title="statement not covered" >        for(var i in page_sizes) {</span>
+<span class="cstat-no" title="statement not covered" >            this.collection.add({</span>
+                is_current: (page_sizes[i] ==  current_page_size),
+                page_size: page_sizes[i]
+            });
+        }
+    },
+    onRender: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >        this.$el.addClass(this.getOption('sizerClassName'));</span>
+    },
+&nbsp;
+});
+&nbsp;
 var CellView = MaGrid.CellView = Marionette.ItemView.extend({
     tagName: 'td',
     template: _.template('&lt;div&gt;&lt;%= display_value  %&gt;&lt;/div&gt;'),
@@ -1783,7 +1942,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 21 2016 19:33:53 GMT+0300 (EEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 21 2016 19:37:11 GMT+0300 (EEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
