@@ -94,7 +94,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     childEvents: {
         'header:cell:click': 'on_header_cell_clicked',
         'paginator:page:click': 'on_page_clicked',
-        'sizer:size:click': 'on_page_size_clicked'
+        'sizer:change': 'on_page_size_changed'
     },
 
     initialize: function(options) {
@@ -168,7 +168,6 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 this._sizerView = new SizerView({
                     bindedCollection: this.collection,
                     sizerClassName: this.getOption('sizerClassName'),
-                    currentPageClass: this.getOption('currentPageClass'),
                     pageSizes: this.getOption('pageSizes')
                 });
             }
@@ -249,11 +248,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this.collection.getPage(page);
         }
     },
-    on_page_size_clicked:  function(sizer_view, size_view) {
-        if(!size_view.model.get('is_active')) {
-            var page_size = size_view.model.get('page_size');
-            this.collection.setPageSize(page_size);
-        }
+    on_page_size_changed:  function(sizer_view, page_size) {
+        this.collection.setPageSize(page_size);
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
         var clean_event_name = event_name.replace('body:row:', '');

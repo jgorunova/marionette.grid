@@ -174,51 +174,27 @@ var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
 });
 
 
-var SizerView = MaGrid.SizerView = Marionette.CollectionView.extend({
-    tagName: 'ul',
-    childViewEventPrefix:'sizer',
-    childView: Marionette.ItemView.extend({
-        tagName: 'li',
-        template: _.template('<a href="#" title="<%= page_size %> items per page"><%= page_size %></a>'),
-        onRender: function() {
-            this.$el.removeClass(this.getOption('currentPageClass'));
-            if(this.model.get('is_current')) {
-                this.$el.addClass(this.getOption('currentPageClass'));
-            }
-        },
-        modelEvents: {
-            'change': 'render'
-        },
-        events: {
-            'click a': 'on_click'
-        },
-        on_click: function(e) {
-            e.preventDefault();
-            this.trigger('size:click');
-        }
-    }),
-    childViewOptions: function() {
+var SizerView = MaGrid.SizerView = Marionette.ItemView.extend({
+    tagName: 'div',
+    template: _.template([
+        '<select><% for(var i in pageSizes) { %>',
+        '<option <% if(pageSizes[i] == currentSize) { %> selected<% }%>  value="<%= pageSizes[i] %>">',
+        '    <%= pageSizes[i] %> items per page',
+        '</option>',
+        '<% }%></select>'
+    ].join('')),
+    templateHelpers: function() {
         return {
-            currentPageClass: this.getOption('currentPageClass')
+            pageSizes: this.getOption('pageSizes'),
+            currentSize: this.getOption('bindedCollection').state.pageSize
         }
     },
-    initialize: function() {
-        this.collection = new Backbone.Collection([], {
-            model: Backbone.Model.extend({
-                defaults: {
-                    page_size: null,
-                    is_current: false
-                }
-            })
-        });
-        var page_sizes = this.getOption('pageSizes');
-        var current_page_size = this.getOption('bindedCollection').state.pageSize;
-        for(var i in page_sizes) {
-            this.collection.add({
-                is_current: (page_sizes[i] ==  current_page_size),
-                page_size: page_sizes[i]
-            });
-        }
+    events: {
+        'change select': 'on_size_changed'
+    },
+    on_size_changed: function(e) {
+        e.preventDefault();
+        this.triggerMethod('sizer:change', parseInt(this.$('select').val()));
     },
     onRender: function() {
         this.$el.addClass(this.getOption('sizerClassName'));
@@ -458,7 +434,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     childEvents: {
         'header:cell:click': 'on_header_cell_clicked',
         'paginator:page:click': 'on_page_clicked',
-        'sizer:size:click': 'on_page_size_clicked'
+        'sizer:change': 'on_page_size_changed'
     },
 
     initialize: function(options) {
@@ -532,7 +508,6 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 this._sizerView = new SizerView({
                     bindedCollection: this.collection,
                     sizerClassName: this.getOption('sizerClassName'),
-                    currentPageClass: this.getOption('currentPageClass'),
                     pageSizes: this.getOption('pageSizes')
                 });
             }
@@ -613,11 +588,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             this.collection.getPage(page);
         }
     },
-    on_page_size_clicked:  function(sizer_view, size_view) {
-        if(!size_view.model.get('is_active')) {
-            var page_size = size_view.model.get('page_size');
-            this.collection.setPageSize(page_size);
-        }
+    on_page_size_changed:  function(sizer_view, page_size) {
+        this.collection.setPageSize(page_size);
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
         var clean_event_name = event_name.replace('body:row:', '');

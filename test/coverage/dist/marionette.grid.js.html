@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.73% </span>
+        <span class="strong">8.15% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>15/194</span>
+        <span class='fraction'>15/184</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">2.88% </span>
+        <span class="strong">3% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/104</span>
+        <span class='fraction'>3/100</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.17% </span>
+        <span class="strong">4.35% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/48</span>
+        <span class='fraction'>2/46</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.81% </span>
+        <span class="strong">8.24% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>15/192</span>
+        <span class='fraction'>15/182</span>
       </div>
     </div>
   </div>
@@ -646,35 +646,7 @@
 601
 602
 603
-604
-605
-606
-607
-608
-609
-610
-611
-612
-613
-614
-615
-616
-617
-618
-619
-620
-621
-622
-623
-624
-625
-626
-627
-628
-629
-630
-631
-632</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+604</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -857,25 +829,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -887,14 +840,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1212,7 +1160,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1291,9 +1238,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1481,51 +1425,27 @@ var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
 });
 &nbsp;
 &nbsp;
-var SizerView = MaGrid.SizerView = Marionette.CollectionView.extend({
-    tagName: 'ul',
-    childViewEventPrefix:'sizer',
-    childView: Marionette.ItemView.extend({
-        tagName: 'li',
-        template: _.template('&lt;a href="#" title="&lt;%= page_size %&gt; items per page"&gt;&lt;%= page_size %&gt;&lt;/a&gt;'),
-        onRender: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >            this.$el.removeClass(this.getOption('currentPageClass'));</span>
-<span class="cstat-no" title="statement not covered" >            if(this.model.get('is_current')) {</span>
-<span class="cstat-no" title="statement not covered" >                this.$el.addClass(this.getOption('currentPageClass'));</span>
-            }
-        },
-        modelEvents: {
-            'change': 'render'
-        },
-        events: {
-            'click a': 'on_click'
-        },
-        on_click: <span class="fstat-no" title="function not covered" >function(e) {</span>
-<span class="cstat-no" title="statement not covered" >            e.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >            this.trigger('size:click');</span>
-        }
-    }),
-    childViewOptions: <span class="fstat-no" title="function not covered" >function() {</span>
+var SizerView = MaGrid.SizerView = Marionette.ItemView.extend({
+    tagName: 'div',
+    template: _.template([
+        '&lt;select&gt;&lt;% for(var i in pageSizes) { %&gt;',
+        '&lt;option &lt;% if(pageSizes[i] == currentSize) { %&gt; selected&lt;% }%&gt;  value="&lt;%= pageSizes[i] %&gt;"&gt;',
+        '    &lt;%= pageSizes[i] %&gt; items per page',
+        '&lt;/option&gt;',
+        '&lt;% }%&gt;&lt;/select&gt;'
+    ].join('')),
+    templateHelpers: <span class="fstat-no" title="function not covered" >function() {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
-            currentPageClass: this.getOption('currentPageClass')
+            pageSizes: this.getOption('pageSizes'),
+            currentSize: this.getOption('bindedCollection').state.pageSize
         }
     },
-    initialize: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >        this.collection = new Backbone.Collection([], {</span>
-            model: Backbone.Model.extend({
-                defaults: {
-                    page_size: null,
-                    is_current: false
-                }
-            })
-        });
-<span class="cstat-no" title="statement not covered" >        var page_sizes = this.getOption('pageSizes');</span>
-<span class="cstat-no" title="statement not covered" >        var current_page_size = this.getOption('bindedCollection').state.pageSize;</span>
-<span class="cstat-no" title="statement not covered" >        for(var i in page_sizes) {</span>
-<span class="cstat-no" title="statement not covered" >            this.collection.add({</span>
-                is_current: (page_sizes[i] ==  current_page_size),
-                page_size: page_sizes[i]
-            });
-        }
+    events: {
+        'change select': 'on_size_changed'
+    },
+    on_size_changed: <span class="fstat-no" title="function not covered" >function(e) {</span>
+<span class="cstat-no" title="statement not covered" >        e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >        this.triggerMethod('sizer:change', parseInt(this.$('select').val()));</span>
     },
     onRender: <span class="fstat-no" title="function not covered" >function() {</span>
 <span class="cstat-no" title="statement not covered" >        this.$el.addClass(this.getOption('sizerClassName'));</span>
@@ -1765,7 +1685,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     childEvents: {
         'header:cell:click': 'on_header_cell_clicked',
         'paginator:page:click': 'on_page_clicked',
-        'sizer:size:click': 'on_page_size_clicked'
+        'sizer:change': 'on_page_size_changed'
     },
 &nbsp;
     initialize: <span class="fstat-no" title="function not covered" >function(options) {</span>
@@ -1839,7 +1759,6 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 <span class="cstat-no" title="statement not covered" >                this._sizerView = new SizerView({</span>
                     bindedCollection: this.collection,
                     sizerClassName: this.getOption('sizerClassName'),
-                    currentPageClass: this.getOption('currentPageClass'),
                     pageSizes: this.getOption('pageSizes')
                 });
             }
@@ -1920,11 +1839,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 <span class="cstat-no" title="statement not covered" >            this.collection.getPage(page);</span>
         }
     },
-    on_page_size_clicked:  <span class="fstat-no" title="function not covered" >function(sizer_view, size_view) {</span>
-<span class="cstat-no" title="statement not covered" >        if(!size_view.model.get('is_active')) {</span>
-<span class="cstat-no" title="statement not covered" >            var page_size = size_view.model.get('page_size');</span>
-<span class="cstat-no" title="statement not covered" >            this.collection.setPageSize(page_size);</span>
-        }
+    on_page_size_changed:  <span class="fstat-no" title="function not covered" >function(sizer_view, page_size) {</span>
+<span class="cstat-no" title="statement not covered" >        this.collection.setPageSize(page_size);</span>
     },
     on_cell_event: <span class="fstat-no" title="function not covered" >function(event_name, body_view, row_view, cell_view) {</span>
 <span class="cstat-no" title="statement not covered" >        var clean_event_name = event_name.replace('body:row:', '');</span>
@@ -1942,7 +1858,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 21 2016 19:37:11 GMT+0300 (EEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 21 2016 20:07:12 GMT+0300 (EEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
