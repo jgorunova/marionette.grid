@@ -331,9 +331,11 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         className: 'magrid-container',
         tableContainerClassName: 'magrid-table-container',
         paginatorContainerClassName: 'magrid-paginator-container',
+        sizerContainerClassName: 'magrid-sizer-container',
         overlayContainerClassName: 'magrid-overlay-container',
         tableClassName: 'magrid-table',
         paginatorClassName: 'magrid-paginator',
+        sizerClassName: 'magrid-sizer',
         sortingAscClassName: 'magrid-asc',
         sortingDescClassName: 'magrid-desc',
         sortableColumnClassName: 'magrid-sortable',
@@ -343,6 +345,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         emptyTextClassName: 'magrid-empty-text',
         overlayText: '',
         emptyText: 'No data to display',
+        pageSizes: [25, 50, 100, 500],
         cellEvents: [
             //'custom_event' //place to listen any Cell event
         ],
@@ -369,6 +372,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         '    <tfoot data-magrid_region="footer"></tfoot>',
         '  </table>',
         '</div>',
+        '<div class="<%= sizerContainerClassName %>" data-magrid_region="sizer"></div>',
         '<div class="<%= paginatorContainerClassName %>" data-magrid_region="paginator"></div>',
         '<div class="<%= overlayContainerClassName %>" style="display: none;" data-magrid_region="overlay">',
         '  <div class="<%= overlayBoxClassName %>"><%= overlayText %></div>',
@@ -378,6 +382,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         return {
             tableContainerClassName: this.getOption('tableContainerClassName'),
             tableClassName: this.getOption('tableClassName'),
+            sizerContainerClassName: this.getOption('sizerContainerClassName'),
             paginatorContainerClassName: this.getOption('paginatorContainerClassName'),
             overlayContainerClassName: this.getOption('overlayContainerClassName'),
             overlayBoxClassName: this.getOption('overlayBoxClassName'),
@@ -387,6 +392,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     regions: {
         headerRegion: '[data-magrid_region="header"]',
         footerRegion: '[data-magrid_region="footer"]',
+        sizerRegion: '[data-magrid_region="sizer"]',
         paginatorRegion: '[data-magrid_region="paginator"]'
     },
     ui: {
@@ -398,7 +404,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     },
     childEvents: {
         'header:cell:click': 'on_header_cell_clicked',
-        'paginator:page:click': 'on_page_clicked'
+        'paginator:page:click': 'on_page_clicked',
+        'sizer:size:click': 'on_page_size_clicked'
     },
 
     initialize: function(options) {
@@ -432,6 +439,9 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         var footerView = this.getFooterView();
         footerView && this.footerRegion.show(footerView);
 
+        var sizerView = this.getSizerView();
+        sizerView && this.sizerRegion.show(sizerView);
+
         var paginatorView = this.getPaginatorView();
         paginatorView && this.paginatorRegion.show(paginatorView);
         this.$el.addClass(this.getOption('className'));
@@ -462,6 +472,19 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
     },
     getFooterView: function() {
 
+    },
+    getSizerView: function() {
+        if(!this._sizerView) {
+            if (Backbone.PageableCollection && this.collection instanceof Backbone.PageableCollection) {
+                this._sizerView = new SizerView({
+                    bindedCollection: this.collection,
+                    sizerClassName: this.getOption('sizerClassName'),
+                    currentPageClass: this.getOption('currentPageClass'),
+                    pageSizes: this.getOption('pageSizes')
+                });
+            }
+        }
+        return this._sizerView;
     },
     getPaginatorView: function() {
         if(!this._paginatorView) {
@@ -535,6 +558,12 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         if(!page_view.model.get('is_active') && !page_view.model.get('is_disabled')) {
             var page = page_view.model.get('page_num');
             this.collection.getPage(page);
+        }
+    },
+    on_page_size_clicked:  function(sizer_view, size_view) {
+        if(!size_view.model.get('is_active')) {
+            var page_size = size_view.model.get('page_size');
+            this.collection.setPageSize(page_size);
         }
     },
     on_cell_event: function(event_name, body_view, row_view, cell_view) {
