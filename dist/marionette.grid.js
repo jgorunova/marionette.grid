@@ -300,9 +300,6 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
     childView: Marionette.ItemView.extend({
         tagName: 'th',
         template: _.template('<div><%= header %></div>'),
-        events: {
-            'click div': 'on_click'
-        },
         modelEvents: {
             'change:direction': 'on_direction_changed'
         },
@@ -311,15 +308,16 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
             this.sortingDescClassName = this.getOption('sortingDescClassName');
             this.sortableColumnClassName = this.getOption('sortableColumnClassName');
         },
-        on_click: function() {
-            if(this.model.get('sortable')) {
-                this.trigger('cell:click');
-            }
-        },
         onRender: function() {
             if(this.model.get('sortable')) {
+                this.$el.on('click', _.bind(function() {
+                    this.trigger('cell:click');
+                }, this));
                 this.$el.addClass(this.sortableColumnClassName);
             }
+        },
+        onBeforeDestroy: function() {
+            this.$el.off('click');
         },
         on_direction_changed: function(model, new_direction) {
             if(new_direction == 'asc') {

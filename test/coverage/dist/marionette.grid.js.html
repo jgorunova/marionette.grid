@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">8.15% </span>
+        <span class="strong">8.11% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>15/184</span>
+        <span class='fraction'>15/185</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">3% </span>
+        <span class="strong">3.06% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>3/100</span>
+        <span class='fraction'>3/98</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.35% </span>
+        <span class="strong">4.26% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/46</span>
+        <span class='fraction'>2/47</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">8.24% </span>
+        <span class="strong">8.2% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>15/182</span>
+        <span class='fraction'>15/183</span>
       </div>
     </div>
   </div>
@@ -644,9 +644,7 @@
 599
 600
 601
-602
-603
-604</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+602</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -952,9 +950,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -962,12 +957,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1551,9 +1547,6 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
     childView: Marionette.ItemView.extend({
         tagName: 'th',
         template: _.template('&lt;div&gt;&lt;%= header %&gt;&lt;/div&gt;'),
-        events: {
-            'click div': 'on_click'
-        },
         modelEvents: {
             'change:direction': 'on_direction_changed'
         },
@@ -1562,15 +1555,16 @@ var HeaderView = MaGrid.HeaderView = Marionette.CollectionView.extend({
 <span class="cstat-no" title="statement not covered" >            this.sortingDescClassName = this.getOption('sortingDescClassName');</span>
 <span class="cstat-no" title="statement not covered" >            this.sortableColumnClassName = this.getOption('sortableColumnClassName');</span>
         },
-        on_click: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >            if(this.model.get('sortable')) {</span>
-<span class="cstat-no" title="statement not covered" >                this.trigger('cell:click');</span>
-            }
-        },
         onRender: <span class="fstat-no" title="function not covered" >function() {</span>
 <span class="cstat-no" title="statement not covered" >            if(this.model.get('sortable')) {</span>
+<span class="cstat-no" title="statement not covered" >                this.$el.on('click', _.bind(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.trigger('cell:click');</span>
+                }, this));
 <span class="cstat-no" title="statement not covered" >                this.$el.addClass(this.sortableColumnClassName);</span>
             }
+        },
+        onBeforeDestroy: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            this.$el.off('click');</span>
         },
         on_direction_changed: <span class="fstat-no" title="function not covered" >function(model, new_direction) {</span>
 <span class="cstat-no" title="statement not covered" >            if(new_direction == 'asc') {</span>
@@ -1858,7 +1852,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 21 2016 20:07:12 GMT+0300 (EEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Aug 05 2016 13:12:54 GMT+0300 (EEST)
 </div>
 </div>
 <script src="../prettify.js"></script>
