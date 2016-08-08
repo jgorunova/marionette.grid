@@ -77,7 +77,7 @@ var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
         this.listenTo(this.bindedCollection, 'add', this.recalculatePages);
         this.listenTo(this.bindedCollection, 'remove', this.recalculatePages);
         this.listenTo(this.bindedCollection, 'reset', this.recalculatePages);
-
+        this.listenTo(this.bindedCollection, 'sync', this.recalculatePages);
         this.recalculatePages();
     },
     onRender: function() {
@@ -261,6 +261,57 @@ var BodyView = MaGrid.BodyView = Marionette.CollectionView.extend({
             collection: this.getOption('columns')
         }
     },
+    renderChildView: function(view, index) {
+      this.attachHtml(this, view, index);
+      if (this.getOption('asyncRender')) {
+          if(index < 50) {
+              view.render();
+          } else {
+              setTimeout(_.bind(function() {
+                  if(!view.isDestroyed) {
+                     view.render();
+                  }
+              }, this), 1);
+          }
+      } else {
+          view.render();
+      }
+
+      return view;
+    },
+    destroy: function() {
+     if (this.isDestroyed) { return this; }
+
+     this.triggerMethod('before:destroy:collection');
+     this.destroyChildren({checkEmpty: false, async: this.getOption('asyncRender')});
+     this.triggerMethod('destroy:collection');
+
+     return Marionette.View.prototype.destroy.apply(this, arguments);
+   },
+    destroyChildren: function(options) {
+        var destroyOptions = options || {};
+        var shouldCheckEmpty = true;
+        var childViews = this.children.map(_.identity);
+
+        if (!_.isUndefined(destroyOptions.checkEmpty)) {
+            shouldCheckEmpty = destroyOptions.checkEmpty;
+        }
+
+        if (destroyOptions.async) {
+            this.children.each(function(view) {
+                setTimeout(_.bind(function() {
+                    this.removeChildView(view);
+                }, this), 1);
+            }, this);
+        } else {
+            this.children.each(this.removeChildView, this);
+        }
+
+        if (shouldCheckEmpty) {
+        this.checkEmpty();
+        }
+        return childViews;
+    },
     emptyView: Marionette.ItemView.extend({
         tagName: 'tr',
         template: _.template('<td class="<%= emptyTextClassName %>" colspan="<%= colspan %>"><%= emptyText %></td>'),
@@ -373,6 +424,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         overlayText: '',
         emptyText: 'No data to display',
         pageSizes: [25, 50, 100, 500],
+        asyncRender: false,
         cellEvents: [
             //'custom_event' //place to listen any Cell event
         ],
@@ -491,7 +543,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 collection: this.collection,
                 columns: this.columnsCollection,
                 emptyText: this.getOption('emptyText'),
-                emptyTextClassName: this.getOption('emptyTextClassName')
+                emptyTextClassName: this.getOption('emptyTextClassName'),
+                asyncRender: this.getOption('asyncRender')
             });
             this.listenTo(this._bodyView, 'all', this.on_cell_event);
         }
@@ -538,9 +591,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             // do not trigger on bubbled model event
             return;
         }
-        if (event_name == 'request' && this.getOption('showLoader')) {
-            this.showLoader();
+        if (event_name == 'request') {
+            this.getOption('showLoader') && this.showLoader();
         } else if (event_name == 'sync' || event_name == 'error') {
+            this._bodyView && this._bodyView.render();
             this.hideLoader();
         }
     },

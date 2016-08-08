@@ -35,6 +35,7 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
         overlayText: '',
         emptyText: 'No data to display',
         pageSizes: [25, 50, 100, 500],
+        asyncRender: false,
         cellEvents: [
             //'custom_event' //place to listen any Cell event
         ],
@@ -153,7 +154,8 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
                 collection: this.collection,
                 columns: this.columnsCollection,
                 emptyText: this.getOption('emptyText'),
-                emptyTextClassName: this.getOption('emptyTextClassName')
+                emptyTextClassName: this.getOption('emptyTextClassName'),
+                asyncRender: this.getOption('asyncRender')
             });
             this.listenTo(this._bodyView, 'all', this.on_cell_event);
         }
@@ -200,9 +202,10 @@ var GridView = MaGrid.GridView = Marionette.LayoutView.extend({
             // do not trigger on bubbled model event
             return;
         }
-        if (event_name == 'request' && this.getOption('showLoader')) {
-            this.showLoader();
+        if (event_name == 'request') {
+            this.getOption('showLoader') && this.showLoader();
         } else if (event_name == 'sync' || event_name == 'error') {
+            this._bodyView && this._bodyView.render();
             this.hideLoader();
         }
     },

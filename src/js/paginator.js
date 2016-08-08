@@ -47,7 +47,7 @@ var PaginatorView = MaGrid.PaginatorView = Marionette.CollectionView.extend({
         this.listenTo(this.bindedCollection, 'add', this.recalculatePages);
         this.listenTo(this.bindedCollection, 'remove', this.recalculatePages);
         this.listenTo(this.bindedCollection, 'reset', this.recalculatePages);
-
+        this.listenTo(this.bindedCollection, 'sync', this.recalculatePages);
         this.recalculatePages();
     },
     onRender: function() {

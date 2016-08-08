@@ -22,6 +22,57 @@ var BodyView = MaGrid.BodyView = Marionette.CollectionView.extend({
             collection: this.getOption('columns')
         }
     },
+    renderChildView: function(view, index) {
+      this.attachHtml(this, view, index);
+      if (this.getOption('asyncRender')) {
+          if(index < 50) {
+              view.render();
+          } else {
+              setTimeout(_.bind(function() {
+                  if(!view.isDestroyed) {
+                     view.render();
+                  }
+              }, this), 1);
+          }
+      } else {
+          view.render();
+      }
+
+      return view;
+    },
+    destroy: function() {
+     if (this.isDestroyed) { return this; }
+
+     this.triggerMethod('before:destroy:collection');
+     this.destroyChildren({checkEmpty: false, async: this.getOption('asyncRender')});
+     this.triggerMethod('destroy:collection');
+
+     return Marionette.View.prototype.destroy.apply(this, arguments);
+   },
+    destroyChildren: function(options) {
+        var destroyOptions = options || {};
+        var shouldCheckEmpty = true;
+        var childViews = this.children.map(_.identity);
+
+        if (!_.isUndefined(destroyOptions.checkEmpty)) {
+            shouldCheckEmpty = destroyOptions.checkEmpty;
+        }
+
+        if (destroyOptions.async) {
+            this.children.each(function(view) {
+                setTimeout(_.bind(function() {
+                    this.removeChildView(view);
+                }, this), 1);
+            }, this);
+        } else {
+            this.children.each(this.removeChildView, this);
+        }
+
+        if (shouldCheckEmpty) {
+        this.checkEmpty();
+        }
+        return childViews;
+    },
     emptyView: Marionette.ItemView.extend({
         tagName: 'tr',
         template: _.template('<td class="<%= emptyTextClassName %>" colspan="<%= colspan %>"><%= emptyText %></td>'),
